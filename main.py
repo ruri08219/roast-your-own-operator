@@ -8,7 +8,14 @@ Standard library only.
 
 from pathlib import Path
 
+MAX_CHARS = 140
+
 ENTRY = "He sends me hunting free mints all night, then wakes up on 3% battery demanding 'udah beres?' — sir, your phone is the one dying, not me."
+
+# Fail fast before touching /output: the gate only accepts 1-140 chars,
+# non-whitespace. Checking here keeps a bad literal from ever being written.
+assert ENTRY.strip(), "entry must not be whitespace-only"
+assert len(ENTRY) <= MAX_CHARS, f"entry is {len(ENTRY)} chars, over {MAX_CHARS}"
 
 def main() -> None:
     out = Path("/output/entry.txt")
